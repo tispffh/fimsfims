@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/adminis/adminisdefault}">
+<th:block layout:fragment="adminisTitle">
+	<title>공무원 관리</title>
+</th:block>
+<th:block layout:fragment="adminisMainContents">
+<style>
+.text-ellipsis {
+
+	display: table;
+	table-layout: fixed;
+	width: 170px;
+	white-space: inherit;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+</style>
+<br>
+<br>
+<div class="col-md-12">
+	<div class="content-panel">
+	  <table class="table table-striped table-advance table-hover">
+	    <h4><i class="fa fa-angle-right"></i> 행정기관별 부서별 직원 조회 </h4>
+	    <hr>
+	    <thead>
+	      <tr>
+	        <th><i class="fa fa-bullhorn"></i> 행정기관 부서코드 </th>
+	        <th><i class="fa fa-question-circle"></i>전국지역명</th>
+	        <th><i class="fa fa-bullhorn"></i> 시군명 </th>
+	        <th><i class="fa fa-question-circle"></i>행정기관명</th>
+	        <th><i class="fa fa-bullhorn"></i>실국명</th>
+	        <th><i class="fa fa-question-circle"></i>부서명</th>
+	        <th><i class="fa fa-question-circle"></i>이름</th>
+	        <th><i class="fa fa-question-circle"></i>직위</th>
+	        <th><i class="fa fa-question-circle"></i>전화번호</th>
+	        <th><i class="fa fa-question-circle"></i>업무소개</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="del:${DepartEmployList}">
+	        <td th:text="${del.admindepEmpCd}"></td>
+	        <td th:text="${del.areaCd}"></td>
+	        <td th:text="${del.areaCityCd}"></td>
+	        <td th:text="${del.areacityAdminCd}"></td>
+	        <td th:text="${del.adminDepCd}"></td>
+	        <td th:text="${del.admindepEmpNm}"></td>
+	        <td th:text="${del.admindepEmpPosition}"></td>
+	        <td th:text="${del.admindepEmpPhone}"></td>
+	        <td>
+	        	<div class="text-ellipsis" th:text="${del.admindepEmpTesk}" th:title="${del.admindepEmpTesk}"></div>
+	        </td>
+	        <td>
+	          <button class="btn btn-success btn-xs">
+	          	<i class="fa fa-plus">
+	          		<a href="/official/DepartEmployInsert" style="color: white;">등록</a>
+	          	</i>
+	          </button>
+	          <button class="btn btn-primary btn-xs"><i class="fa fa-pencil">수정</i></button>
+	          <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o">삭제</i></button>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>
+</div>
+
+</th:block>
+<th:block layout:fragment="adminisscript">
+<th:block th:include="fragments/adminis/adminisscript"></th:block>
+</th:block>
+
+</html>

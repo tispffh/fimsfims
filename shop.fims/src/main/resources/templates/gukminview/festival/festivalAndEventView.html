@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/gukmin/gukmindefault}">
+<th:block layout:fragment="gukminMainContents">
+<style>
+.wrap {
+	position: absolute;
+	left: 0;
+	bottom: 40px;
+	width: 288px;
+	height: 132px;
+	margin-left: -144px;
+	text-align: left;
+	overflow: hidden;
+	font-size: 12px;
+	font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+	line-height: 1.5;
+}
+.wrap * {
+	padding: 0;
+	margin: 0;
+}
+.wrap .info {
+	width: 286px;
+	height: 120px;
+	border-radius: 5px;
+	border-bottom: 2px solid #ccc;
+	border-right: 1px solid #ccc;
+	overflow: hidden;
+	background: #fff;
+}
+.wrap .info:nth-child(1) {
+	border: 0;
+	box-shadow: 0px 1px 2px #888;
+}
+.info .title {
+	padding: 5px 0 0 10px;
+	height: 30px;
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: bold;
+}
+.info .close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: #888;
+	width: 17px;
+	height: 17px;
+	background:
+		url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+}
+.info .close:hover {
+	cursor: pointer;
+}
+.info .body {
+	position: relative;
+	overflow: hidden;
+}
+.info .desc {
+	position: relative;
+	margin: 13px 0 0 90px;
+	height: 75px;
+}
+.desc .ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.desc .jibun {
+	font-size: 11px;
+	color: #888;
+	margin-top: -2px;
+}
+.info .img {
+	position: absolute;
+	top: 6px;
+	left: 5px;
+	width: 73px;
+	height: 71px;
+	border: 1px solid #ddd;
+	color: #888;
+	overflow: hidden;
+}
+.info:after {
+	content: '';
+	position: absolute;
+	margin-left: -12px;
+	left: 50%;
+	bottom: 0;
+	width: 22px;
+	height: 12px;
+	background:
+		url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+}
+.info .link {
+	color: #5085BB;
+}
+</style>
+<style>
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#googlemap {
+	height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+</style>
+<section>
+<th:block th:include="fragments/gukmin/gukmincarousel"></th:block>
+	<div class="mapCont">
+		<p class="tit">
+			<img src="https://joyfesta.kr/include/img/etc/etc_maptitle.png" />
+		</p>
+		<div class="mapOpt">
+			<dl>
+				<dt>방문예정일</dt>
+				<dd>
+					<div class="form">
+						<input type="text" id="festivalstartdate" class="inp datepicker"
+							autocomplete="off" placeholder="선택하세요" /><span class="etxt">~</span><input
+							type="text" id="festivalenddate" class="inp datepicker fr"
+							autocomplete="off" placeholder="선택하세요" />
+					</div>
+				</dd>
+				<dt>지역</dt>
+				<dd>
+					<div class="form">
+						<ul class="msTabs">
+							<li><a href="javascript:void(0)" class="on"
+								onclick="javascript:$('#region').val('');initMap();"
+								data-id="msTabs01">국내</a></li>
+						</ul>
+						<div id="msTabs01" class="msArea">
+							<select class="select" id="sido">
+								<option value="">지역(시도)</option>
+								<option value="서울">서울특별시</option>
+								<option value="부산">부산광역시</option>
+								<option value="대구">대구광역시</option>
+								<option value="인천">인천광역시</option>
+								<option value="광주">광주광역시</option>
+								<option value="대전">대전광역시</option>
+								<option value="울산">울산광역시</option>
+								<option value="세종">세종특별자치시</option>
+								<option value="경기">경기도</option>
+								<option value="강원">강원도</option>
+								<option value="충북">충청북도</option>
+								<option value="충남">충청남도</option>
+								<option value="전북">전라북도</option>
+								<option value="전남">전라남도</option>
+								<option value="경북">경상북도</option>
+								<option value="경남">경상남도</option>
+								<option value="제주">제주특별자치도</option>
+							</select> <select class="select" id="sigungu">
+								<option value="">지역(시군구)</option>
+							</select>
+						</div>
+						<div id="msTabs02" class="msArea">
+							<select class="select" id="region" name="region">
+								<option value="">대륙</option>
+								<option value="101">아시아ㆍ중동</option>
+								<option value="102">아메리카</option>
+								<option value="103">유럽</option>
+								<option value="104">아프리카ㆍ오세아니아</option>
+							</select>
+						</div>
+					</div>
+				</dd>
+				<dt>유형</dt>
+				<dd>
+					<div class="form">
+						<tr>
+    <td class="tdLabel"></td>
+    <td
+><select name="typeseq" id="typeseq" class="select">
+    <option value=""
+    >전체</option>
+    <option value="23">먹거리</option>
+    <option value="24">지역ㆍ특산물</option>
+    <option value="25">민속ㆍ전통문화</option>
+    <option value="26">미술ㆍ예술</option>
+    <option value="27">음악ㆍ공연</option>
+    <option value="28">생태계ㆍ자연</option>
+    <option value="29">레저ㆍ스포츠</option>
+    <option value="30">과학ㆍ기술</option>
+    <option value="31">교육ㆍ체험</option>
+    <option value="32">종교ㆍ역사</option>
+    <option value="33">기타</option>
+</select>
+</td>
+</tr>
+					</div>
+				</dd>
+			</dl>
+		</div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ce9799ace907394c3c6506c13da262a3&libraries=services"></script>
+		<div class="mapArea">
+			<div id="map" style="width:100%;height:310px;"></div>
+		</div>
+	</div>
+<script>
+// 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+//일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+var mapTypeControl = new kakao.maps.MapTypeControl();
+//지도에 컨트롤을 추가해야 지도위에 표시됩니다
+//kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+//지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+var zoomControl = new kakao.maps.ZoomControl();
+map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+// 장소 검색 객체를 생성합니다
+var ps = new kakao.maps.services.Places(); 
+// 키워드로 장소를 검색합니다
+ps.keywordSearch('이태원 맛집', placesSearchCB); 
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+function placesSearchCB (data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        var bounds = new kakao.maps.LatLngBounds();
+        for (var i=0; i<data.length; i++) {
+            displayMarker(data[i]);    
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }       
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+    } 
+}
+// 지도에 마커를 표시하는 함수입니다
+function displayMarker(place) {
+    // 마커를 생성하고 지도에 표시합니다
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(place.y, place.x) 
+    });
+    // 마커에 클릭이벤트를 등록합니다
+    kakao.maps.event.addListener(marker, 'click', function() {
+        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+        infowindow.open(map, marker);
+    });
+}
+</script>
+	<link rel="stylesheet" type="text/css" href="/gukmin/css/style.css"/>
+	
+	<script src="/gukmin/js/markerclusterer.js"></script>
+	<div class="obgBox">
+		<h2 class="mtit t01">베스트 축제·이벤트</h2>
+		<div class="planSlideBox">
+			<div class="planSlide">
+						<div class="item">
+					<div class="list">
+						<div class="pic">
+							<div class="bestBox">
+								1
+							</div>
+							<div class="pic_area">
+								<a
+									href="#"><img
+									src="https://joyfesta.kr/uploadedfiles/spot/2019/11/[크기변환]77da2ebb-6ae5-4ec6-a6ed-999951d0750e_171929175.jpg" />
+									<div class="sts_area">
+												<span class="sts_be">진행<br />예정
+												</span>
+									</div></a>
+							</div>
+						</div>
+						<div class="cont">
+							<p class="t01">
+								<a
+									href="#">얼음나라 화천  산천어 축제 2020</a>
+							</p>
+							<div class="t02">
+								2020.01.11
+								~
+								2020.02.02
+							</div>
+							<a href="javascript:void(0)"
+								class="btnHart ">&nbsp;</a>
+						</div>
+					</div>
+					<div class="list">
+						<div class="pic">
+							<div class="bestBox">
+								2
+							</div>
+							<div class="pic_area">
+								<a
+									href="#"><img
+									src="https://joyfesta.kr/uploadedfiles/spot/2019/11/[크기변환]sub2-4-1_1_174626326.jpg" />
+									<div class="sts_area">
+												<span class="sts_be">진행<br />예정
+												</span>
+									</div></a>
+							</div>
+						</div>
+						<div class="cont">
+							<p class="t01">
+								<a
+									href="#">영동 곶감축제 2020</a>
+							</p>
+							<div class="t02">
+								2020.01.03
+								~
+								2020.01.05
+							</div>
+							<a href="javascript:void(0)"
+								class="btnHart ">&nbsp;</a>
+						</div>
+					</div>
+					<div class="list">
+						<div class="pic">
+							<div class="bestBox">
+								3
+							</div>
+							<div class="pic_area">
+								<a
+									href="#"><img
+									src="https://joyfesta.kr/uploadedfiles/spot/2019/11/4_144903387.jpg" />
+									<div class="sts_area">
+												<span class="sts_ing">진행중</span>
+									</div></a>
+							</div>
+						</div>
+						<div class="cont">
+							<p class="t01">
+								<a
+									href="#">서울디저트페어 [딸기전] 2019</a>
+							</p>
+							<div class="t02">
+								2019.12.28
+								~
+								2019.12.29
+							</div>
+							<a href="javascript:void(0)"
+								class="btnHart ">&nbsp;</a>
+						</div>
+					</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	<div class="ebgBox">
+			<ul class="categoriList">
+				<li><a href="#" class="on">전체</a></li>
+					<li><a
+						href="#">먹거리</a></li>
+					<li><a
+						href="#">지역ㆍ특산물</a></li>
+					<li><a
+						href="#">민속ㆍ전통문화</a></li>
+					<li><a
+						href="#">미술ㆍ예술</a></li>
+					<li><a
+						href="#">음악ㆍ공연</a></li>
+					<li><a
+						href="#">생태계ㆍ자연</a></li>
+					<li><a
+						href="#">레저ㆍ스포츠</a></li>
+					<li><a
+						href="#">과학ㆍ기술</a></li>
+					<li><a
+						href="#">교육ㆍ체험</a></li>
+					<li><a
+						href="#">종교ㆍ역사</a></li>
+					<li><a
+						href="#">기타</a></li>
+			</ul>
+	</div>
+</section>
+</th:block>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/adminis/adminisdefault}">
+<th:block layout:fragment="adminisTitle">
+	<title>프로그램 분류 관리</title>
+</th:block>
+<th:block layout:fragment="adminisMainContents">
+
+
+<h1 align="center"><span >《[[${session.F_NM}]]》 프로그램 분류관리</span></h1>
+	<!-- 프로그램일자분류 -->
+	<div class="col-md-12 mt">
+	 		<div class="col-md-4 mt">
+            <div class="content-panel">
+              <h4 align="center">프로그램 일자 분류</h4>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#proDivDay">
+  일자분류 신규등록
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="proDivDay" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="proDivDay">일자분류 신규등록</h4>
+      </div>
+      <div class="modal-body">
+	      <form  th:action="@{/proInsertDivDay}" method="post">
+	      	       <div class="form-group ">
+	      	       <span><font style="color: red">축제통합관리시스템에서 공통적으로 이용되는 분류이므로 추가에 유의하시기 바랍니다.</font></span><br><br> 
+                    <label for="cname" class="control-label col-lg-2"><font style="vertical-align: inherit;">분류명</font></label>
+                    <div class="col-lg-10">
+                      <input class=" form-control" name="festprodivDayNm" minlength="2" type="text">
+                    </div>
+                  </div><br>     
+		      <hr>
+		      	<div align="right">
+		      		<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+		        	<button type="submit" class="btn btn-primary">등록하기</button>
+		      	</div>	      
+	      </form>
+      </div>
+    </div>
+  </div>
+</div>  
+              
+
+              <hr>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>프로그램 일자명</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="d:${ProDivDay}">
+                    <td th:text="${dStat.count}"></td>
+                    <td th:text="${d.festprodivDayNm}"></td>
+                    <td><a th:href="@{/proUpdateDivDay}" >
+                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a></td>
+                    <td><a th:href="@{/proDeleteDivDay}" >
+                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+		
+	<!-- 프로그램 장소분류 -->
+	 		<div class="col-md-4 mt">
+            <div class="content-panel">
+              <h4 align="center">프로그램 장소 분류</h4>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#proDivPlace">
+장소분류 신규등록
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="proDivPlace" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="proDivPlace">장소분류 신규등록</h4>
+      </div>
+      <div class="modal-body">
+	      <form  th:action="@{/proInsertDivPlace}" method="post">
+	      	       <div class="form-group ">
+                    <label for="cname" class="control-label col-lg-2"><font style="vertical-align: inherit;">분류명</font></label>
+                    <div class="col-lg-10">
+                      <input class=" form-control" name="festprodivPlaNm" minlength="2" type="text">
+                    </div>
+                  </div><br>     
+		      <hr>
+		      	<div align="right">
+		      		<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+		        	<button type="submit" class="btn btn-primary">등록하기</button>
+		      	</div>	      
+	      </form>
+      </div>
+    </div>
+  </div>
+</div>               
+              
+              <hr>
+              <table class="table table-hover">
+                
+                
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>프로그램 장소명</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="p:${ProDivPlace}">
+                    <td th:text="${pStat.count}"></td>
+                    <td th:text="${p.festprodivPlaNm}"></td>
+					<td><a th:href="@{/proUpdateDivPlace}" >
+                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a></td>
+                    <td><a th:href="@{/proDeleteDivPlace}" >
+                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+	 
+	
+	<!-- 프로그램 성격분류 -->
+			<div class="col-md-4 mt">
+            <div class="content-panel">
+              <h4 align="center">프로그램 성격 분류</h4>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#proDivTheme">
+성격분류 신규등록
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="proDivTheme" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="proDivTheme">성격분류 신규등록</h4>
+      </div>
+      <div class="modal-body">
+	      <form  th:action="@{/proInsertDivTheme}" method="post">
+	      	       <div class="form-group ">
+                    <label for="cname" class="control-label col-lg-2"><font style="vertical-align: inherit;">분류명</font></label>
+                    <div class="col-lg-10">
+                      <input class=" form-control" name="festprodivThemeNm" minlength="2" type="text">
+                    </div>
+                  </div><br>     
+		      <hr>
+		      	<div align="right">
+		      		<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+		        	<button type="submit" class="btn btn-primary">등록하기</button>
+		      	</div>	      
+	      </form>
+      </div>
+    </div>
+  </div>
+</div>               
+              <hr>
+              <table class="table table-hover">
+                
+                
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>프로그램 성격명</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="t:${ProDivTheme}">
+                    <td th:text="${tStat.count}"></td>
+                    <td th:text="${t.festprodivThemeNm}"></td>
+					<td><a th:href="@{/proUpdateDivTheme}" >
+                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button></a></td>
+                    <td><a th:href="@{/proDeleteDivTheme}" >
+                    <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>	
+		</div>
+
+</th:block>
+<th:block layout:fragment="adminisscript">
+<th:block th:include="fragments/adminis/adminisscript">
+
+</th:block>
+</th:block>
+
+</html>
+

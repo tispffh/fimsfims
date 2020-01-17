@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="shop.fims.goods.GoodsMapper">
+ <resultMap type="shop.fims.vo.Goods" id="goodslist">
+ 
+ <result property="goodspreConCd" column="goodspre_con_cd"/>
+ <result property="areacityAdmCd" column="areacity_admin_cd"/>
+ <result property="areaCd" column="area_cd"/>
+ <result property="areaCityCd" column="area_city_cd"/>
+ <result property="festCd" column="fest_cd"/>
+ <result property="adminDepCd" column="admin_dep_cd"/>
+ <result property="admindepEmpNm" column="admindep_emp_nm"/>
+ <result property="admAgeNm" column="adm_age_nm"/>
+ <result property="areaCityNm" column="area_city_nm"/>
+ <result property="areacityAdminNm" column="areacity_admin_nm"/>
+ <result property="festNm" column="fest_nm"/>
+ <result property="admimDepNm" column="admim_dep_nm"/>
+ <result property="goodsNm" column="goods_nm"/>
+ <result property="goodsAmt" column="goods_count"/>
+ <result property="specialNote" column="special_note"/>
+
+ <result property="areaNm" column="area_nm"/>
+ <result property="areaCityNm" column="area_city_nm"/>
+
+ 
+ 
+ 
+ 
+ </resultMap>
+  <select id="goodslist" resultMap="goodslist">
+	
+	SELECT
+	*
+	FROM
+	Goods_present_condition AS gpc
+	INNER join
+	Area AS a
+	on
+	gpc.area_cd = a.area_cd
+	INNER join
+	Area_City AS ac
+	on
+	gpc.area_city_cd = ac.area_city_cd
+	INNER join
+	Area_City_Admin AS aca
+	on
+	gpc.areacity_admin_cd = aca.areacity_admin_cd
+	
+  </select>
+  <select id="pageupdatecondition" resultMap="goodslist">
+  	
+	SELECT
+	*
+	FROM
+	Goods_present_condition AS gpc
+	INNER join
+	Area AS a
+	on
+	gpc.area_cd = a.area_cd
+	INNER join
+	Area_City AS ac
+	on
+	gpc.area_city_cd = ac.area_city_cd
+	INNER join
+	Area_City_Admin AS aca
+	on
+	gpc.areacity_admin_cd = aca.areacity_admin_cd
+	where
+	gpc.goodspre_con_cd = #{goodspre_con_cd}
+  
+  
+  </select>
+ 
+<update id="updatecondition" parameterType="shop.fims.vo.Goods">
+  UPDATE Goods_present_condition
+	SET
+
+	goods_nm = #{goodsNm},
+	goods_count = #{goodsAmt},
+	special_note = #{specialNote}
+	
+	WHERE 
+	goodspre_con_cd= #{goodspreConCd}
+  
+</update>
+  </mapper>

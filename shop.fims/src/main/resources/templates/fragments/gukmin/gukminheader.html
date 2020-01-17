@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" >
+    <!--header start-->
+<header th:fragment="gukminHeaderFragment">
+	<div class="rela">
+		<h1>
+			<a href="/"><img
+				src="/gukmin/images/gukminlog.jpg" /></a>
+		</h1>
+		<div class="totalBox">
+			<nav>
+				<ul>
+					<li id="mainli"><a href="/gukminview/gukminMainView" id="mainhref">전체</a></li>
+					<li id="festivalli"><a href="/gukminview/festival/festivalAndEventView" id="festivalhref">축제·이벤트</a></li>
+					<li id="marketli"><a href="/gukminview/acontract/orderingPlanView" id="markethref">계약공시</a></li>
+					<li id="promotionli"><a href="/gukminview/ebudget/revBudgetView"
+						id="promotionhref">경영공시</a></li>
+					<li id="communityli"><a href="/gukminview/community/communityView"
+						id="communityhref">커뮤니티</a>
+						<ul>
+							<li><a href="/gukminview/community/eventView">이벤트</a></li>
+							<li><a href="/gukminview/community/communityView">공지사항</a></li>
+							<li><a href="/gukminview/community/faqView">FAQ</a></li>
+						</ul></li>
+				</ul>
+			</nav>
+			<div class="etcRight">
+				<ul>
+					<li class="ico_spot"><a href="/admin/main" th:if="${session.SLEVEL == '공무원' || session.SLEVEL == '거래처' || session.SLEVEL == 'SW개발사'}">관리자홈페이지</a></li>
+					<li class="ico_spot">
+						<a href="/gukminview/festival/hostSpotRegisterForm" th:if="${session.SLEVEL == '공무원' || session.SLEVEL == '거래처' || session.SLEVEL == 'SW개발사' || session.SLEVEL == null}">축제등록하기</a>
+					</li>
+					<li class="ico_jjimList"><a href="/gukminview/member/myBookmarkView" th:if="${session.SLEVEL == '국민' }">찜 목록</a></li>
+				</ul>
+					<a th:href="@{/gukminview/login/loginForm}" th:if="${session.SID eq null}" class="pLogout"><span>로그인</span></a>
+			</div>
+			<th:block th:unless="${session.SID eq null}">
+			<div class="etcRight">
+					<a title="마이페이지 이동" href="/gukminview/member/hostPageView" class="pMy"><img
+						src="https://joyfesta.kr/include/img/etc/etc_mimg.png" /><span class="t01">
+								[[${session.SNAME}]] 님 [[${session.SLEVEL}]] 권한
+					</span></a>
+					<a th:href="@{/logout}"
+						onclick="logout('0');"
+						class="pLogout"><span>로그아웃</span> </a>
+			</div>
+			</th:block>
+		</div>
+		 <form id="searchform" name="searchform" action="/gukminview/festival/festivalSearch" method="post">
+			<div class="searchBox">
+				<input type="text" autocomplete="off" id="tagSearch"
+					name="tagSearch"
+					placeholder="무엇을 찾고 싶으세요?" /> <a href="javascript:void(0)"
+					class="btnSearch"><img
+					src="https://joyfesta.kr/include/img/ico/ico_search.png" id="keywordsearchbutton" onclick="location.href='/gukminview/festival/festivalSearch'"/></a>
+				<a href="javascript:void(0)" class="btnSmartSearch"><img
+					src="https://joyfesta.kr/include/img/ico/ico_search01.png" /></a>
+			</div>
+			<a href="javascript:void(0)" class="totalMenu"><span>전체메뉴</span></a>
+		 </form>
+	</div>
+</header>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/gukmin/gukmindefault}">
+
+<th:block layout:fragment="gukminMainContents">
+
+<form id="bookmarklistform" name="bookmarklistform" action="/gukminview/member/myBookmarkView" method="post">
+	<section>
+		<div class="mypDesc">
+			<p class="t01">나의 찜목록</p>
+			<p class="t02">내가 찜한 축제의 목록을 보여줍니다!</p>
+		</div>
+		<div class="norBox">
+			<ul class="commTabs t01">
+				<li><a href="/gukminview/member/myBookmarkView" class="on">나만의 찜목록</a></li>
+				<li><a href="/gukminview/member/myBookmarkSpotView">찜축제 전체보기</a></li>
+				<li><a href="#">찜기업</a></li>
+				<li><a href="#">최근 본 축제</a></li>
+			</ul>
+			<div class="btnArea ar">
+				<a href="javascript:editMyBookmarkList();" class="btnManager2">찜목록관리</a>
+			</div>
+			<ul class="myjjimList" id="bookmarklist">
+			</ul>
+			<div class="paging" id="bookmarklistpaging"></div>
+		</div>
+	</section>
+
+	<input type="hidden" name="currentPage" value="" id="currentPage"/>
+	<div class="dialog" id="bookmarklistdialog"
+		style="display: none; z-index: 1000;">
+		<div class="popBox">
+			<div class="popHeader">
+				<h1>찜목록관리</h1>
+				<a href="javascript:void(0)"
+					><img
+					src="https://joyfesta.kr/include/img/ico/ico_close02.png" /></a>
+			</div>
+			<div class="popCont">
+				<div class="popjjim_list_edit">
+					<ul class="list_edit">
+					</ul>
+					<div class="list_add">
+						<div class="cont">
+							<input type="text" id="title" placeholder="찜목록명" />
+						</div>
+						<div class="btnArea">
+							<a href="#" id="bookmarkaddbutton" class="btnSmall">추가</a>
+						</div>
+					</div>
+				</div>
+				<div class="btnBox">
+			
+					<a href="javascript:void(0)"
+						
+						class="btnType02">닫기</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</form>
+
+
+
+<script src="/gukmin/js/underscore-min.js"></script>
+
+
+</th:block>
+
+</html>

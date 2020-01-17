@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/adminis/adminisdefault}">
+<th:block layout:fragment="adminisTitle">
+	<title>홍보 상세내역</title>
+</th:block>
+<th:block layout:fragment="adminisScript">
+	<script th:src="@{/adminis/lib/jquery/jquery.min.js}"></script>				
+	
+<script type="text/javascript">
+$(document).ready(function(){
+/* 	뒤로가기버튼	 */
+	$('#pageBack').click(function(){
+			window.history.back();
+		})	
+		
+		
+		
+/* 마감상태변경 */	
+		$('#actionGO').click(function(){
+			$('#actionCheck').val('Y');
+			
+		})	
+		$('#actionCancel').click(function(){
+			$('#actionCheck').val('N');
+		})	
+		
+/* 	삭제버튼	 */
+			$('#prDetailDeleteBtn').click(function(){
+		var deleteadd = $('#deleteAdd').val();
+		if (confirm('삭제하면 되돌릴 수 없습니다. 정말 삭제하시겠습니까?') == true){
+		    $('#prDel').submit();
+		}else{   
+		    return;
+	}	
+	})
+	
+	
+		var actionstatus = $('#actionStatus').text();
+		if(actionstatus=='N'){
+			$('#actionGO').css('display','block');
+			return false;
+		}else{
+			$('#actionCancel').css('display','block');
+			return false;
+		}
+		
+
+	
+/* document.ready 종료 */
+})
+
+</script>
+</th:block>
+<th:block layout:fragment="adminisMainContents">
+<div class="col-lg-12">
+
+            <div class="form-panel">
+
+<!-- 상단 홍보관련메뉴 -->	            
+	            <div id="controls-tabs">
+		            <div class="wrap_controls">
+		            	<ul class="ullist controls " style="margin: 0px; padding: 0px; list-style-type: none;">
+				            <li class=""><a th:href="@{/prDivList}" id="prDivBtn" style="color: rgb(102, 102, 102); display: block; padding: 5px; font-size: inherit; text-decoration: none;">
+				            	<span>홍보분류관리</span></a></li>
+				            <li class="active"><a th:href="@{/prPromotionList}"  id="prPromotionBtn" style="color: rgb(102, 102, 102); display: block; padding: 5px; font-size: inherit; text-decoration: none;">
+				            	<span>홍보사업관리</span></a></li>
+				            <li class=""><a th:href="@{/prComList}" id="prComBtn" style="color: rgb(102, 102, 102); display: block; padding: 5px; font-size: inherit; text-decoration: none;">
+				            	<span>홍보거래처관리</span></a></li>
+		           		</ul>
+		            </div>
+            	</div>
+            
+            <th:block th:each="p:${selectByPmcd}" >   
+            <h1 align="center">《<span th:text=${p.festpr_pro_nm}></span>》 사업 상세 내역</h1>	
+              <div class="form">
+                <form th:action="@{/prInsertPromotionPro}" class="cmxform form-horizontal style-form" id="promotionForm" method="post" enctype="multipart/form-data" th:with="event='PRw0008'">
+                  <br>
+                  <div class="col-lg-6" align="left">
+                  <button type="button" class="btn btn-default" id="pageBack">뒤로가기</button></div>
+                  <div class="col-lg-6" align="right">
+                  <strong>작성일 : <span th:text="${p.insert_dt}"></span><br>
+        			          작성자 : <span th:text="${p.man_com_dep}"></span> - <span th:text="${p.com_mem_nm2}"></span></strong>  </div>
+                  
+                  <br><hr>
+                 
+                 	<div class="form-group ">
+                    	<label for="festCd" class="control-label col-lg-1"><font style="vertical-align: inherit;">축제명</font></label>
+                  	  	<div class="col-lg-11">
+                  	  		<h4><strong><th:text>[[${session.F_NM} ]]</th:text></strong></h4>
+                      		<input class=" form-control" id="festCd" name="festCd" type="hidden" th:value="${session.F_CD}">
+                      		<input class=" form-control" id="festTitle" name="festTitle" type="hidden" th:value="${session.F_NM}">
+                    	</div>
+                  	</div>
+                  	
+                 	<div class="form-group ">
+                    	<label for="areaCd" class="control-label col-lg-1"><font style="vertical-align: inherit;">지역명</font></label>
+                  	  	<div class="col-lg-3">
+                      		<h4><strong><th:text>[[${session.F_AREA_NM} ]]</th:text></strong></h4>
+                      		<input class=" form-control" id="areaCd" name="areaCd" type="hidden" th:value="${session.F_AREA_CD}">
+                    	</div>
+                    	<label for="areaCityCd" class="control-label col-lg-1"><font style="vertical-align: inherit;">도시명</font></label>
+                  	  	<div class="col-lg-3">
+                      		<h4><strong><th:text>[[${session.F_CITY_NM} ]]</th:text></strong></h4>
+                      		<input class=" form-control" id="areaCityCd" name="areaCityCd" type="hidden" th:value="${session.F_CITY_CD}">
+                    	</div>
+                    	<label for="areacityAdminCd" class="control-label col-lg-1"><font style="vertical-align: inherit;">담당기관</font></label>
+                  	  	<div class="col-lg-3">
+                      		<h4><strong><th:text>[[${session.F_ADMIN_NM} ]]</th:text></strong></h4>
+                      		<input class=" form-control" id="areacityAdminCd" name="areacityAdminCd" type="hidden" th:value="${session.F_ADMIN_CD}">
+                    	</div>
+                 	</div>
+                  	                 	
+                  <div class="form-group ">                
+                    <label for="catAccNm1" class="control-label col-lg-1"><font style="vertical-align: inherit;">거래처명</font></label>
+                    <div class="col-lg-2">		
+			            <label class="sr-only" for="catAccNm1"></label>
+			            <h4><strong th:text="${p.cat_acc_nm1}"></strong></h4>	            
+			            </div>   
+			            <div class="col-lg-9" align="left">
+			      		      <font><strong>《미승인 거래처》 는 거래처 승인 후 반드시 수정하시기 바랍니다.</strong></font> 
+			             </div>               
+                  </div>
+                  
+                  <div class="form-group ">       
+                    <label for="fprproOrderDt" class="control-label col-lg-1"><font style="vertical-align: inherit;">계약/주문일</font></label>
+                    <div class="col-lg-3">
+                      <h4><strong th:text="${p.fprpro_order_dt}"></strong></h4>	                
+                    </div>
+                    <label for="fprproStartDt" class="control-label col-lg-1"><font style="vertical-align: inherit;">홍보시작일</font></label>
+                    <div class="col-lg-3">
+                      <h4><strong th:text="${p.fprpro_start_dt}"></strong></h4>	                
+                    </div>
+                    <label for="fprproEndDt" class="control-label col-lg-1"><font style="vertical-align: inherit;">홍보종료일</font></label>
+                    <div class="col-lg-3">
+                      <h4><strong th:text="${p.fprpro_end_dt}"></strong></h4>	                
+                    </div>                     
+                  </div>
+                  
+                  <div class="form-group ">
+                    <label for="festprDivCd" class="control-label col-lg-1"><font style="vertical-align: inherit;">홍보분류</font></label>
+                    <div class="col-lg-3">		
+			            <h4><strong th:text="${p.festpr_div_nm}"></strong></h4> 
+                    </div>
+                    <label for="festprProNm" class="control-label col-lg-1"><font style="vertical-align: inherit;">홍보매체명</font></label>
+                    <div class="col-lg-3">
+                      <h4><strong th:text="${p.festpr_pro_nm}"></strong></h4>                      
+                    </div>               
+                    <label for="festprProAmt" class="control-label col-lg-1"><font style="vertical-align: inherit;">수량</font></label>
+                    <div class="col-lg-3">
+                      <h4><strong th:text="${p.festpr_pro_amt}"></strong></h4>
+                    </div>               
+                  </div>
+                  
+                  <div class="form-group ">       
+                    <label for="fesrevBudCd" class="control-label col-lg-2"><font style="vertical-align: inherit;">예산분류</font></label>
+                    <div class="col-lg-4">		
+			            <h4><strong><span th:text="${p.accsub_medium_nm}"></span> - <span th:text="${p.accsub_nm}"></span></strong></h4>          
+                    </div>
+                    
+                    <label for="groupCd" class="control-label col-lg-2"><font style="vertical-align: inherit;">홍보그룹</font></label>
+                     
+                    <div class="col-lg-4">		
+			            <h4><strong><span th:text="${p.group_nm}"></span></strong></h4> 
+			            </div>
+                  </div>
+                      
+                  <div class="form-group ">    
+                   <label for="festprProExpense" class="control-label col-lg-1"><font style="vertical-align: inherit;">계약금액</font></label>
+                    <div class="col-lg-2">
+                      <h4><strong th:text="${p.festpr_pro_expense}"></strong></h4>             
+                    </div> 
+                   <label for="actionStatus" class="control-label col-lg-1"><font style="vertical-align: inherit;">마감여부</font></label>
+                    <div class="col-lg-2">
+                      <h4><strong th:text="${p.action_status}" id="actionStatus"></strong></h4>             
+                    </div>  
+                   <label for="actionBtn" class="control-label col-lg-1"><font style="vertical-align: inherit;">마감하기</font></label>
+                    <div class="col-lg-2">
+
+                      <a th:href="@{/actionStart(festprProCd=${p.festpr_pro_cd})}">
+                      <button type="button" class="btn btn-primary" id="actionGO" style="display: none;">마감하기</button></a>                
+                      
+                      <font style="color: red"><h4><strong ><span id="actionCancel"  style="display: none;">마감완료 </span></strong></h4></font>                     
+                           
+                    </div>  
+                   <label for="action_dt" class="control-label col-lg-1"><font style="vertical-align: inherit;">마감일</font></label>
+                    <div class="col-lg-2" id="actionDate">
+                      <h4><strong th:text="${p.action_dt}"></strong></h4>             
+                    </div>   
+                   
+                   </div>
+                                                     
+                  <div class="form-group ">
+                    <label for="festprProPlace" class="control-label col-lg-2"><font style="vertical-align: inherit;">장소/배포처</font></label>
+                    <div class="col-lg-10" th:text="${p.festpr_pro_place}">      	                	                             
+                    </div>
+                  </div>
+                  
+                  <div class="form-group ">
+                    <label for="festprProDetail" class="control-label col-lg-2"><font style="vertical-align: inherit;">홍보상세내용</font></label>
+                    <div class="col-lg-10" th:text="${p.festpr_pro_detail}">                    
+                    </div>
+                  </div>
+                  
+                  <div class="form-group ">
+                    <label for="festprProEtc" class="control-label col-lg-2"><font style="vertical-align: inherit;">비고</font></label>
+                    <div class="col-lg-10" th:text="${p.festpr_pro_etc}">                   
+                    </div>
+                  </div>              
+                                
+                  <div class="form-group" th:each="f:${file}">                 
+                    <label for="festprProAttach" class="control-label col-lg-2"><font style="vertical-align: inherit;">첨부파일</font></label>
+                    <div class="col-lg-5" >
+                    	<h4><strong th:text="${f.fileNm}"></strong></h4> 
+                    </div>
+                    <div class="col-lg-5">
+                    	<button class="btn btn-default"><font style="vertical-align: inherit;">다운로드 기능 아직 안됨</font></button>																							              
+                    </div>
+                  </div>         
+
+                  <div class="form-group" th:if="${p.festpr_div_cd == event}" >                 
+                    <div class="col-lg-12" align="center">
+                    	<a th:href="@{/prEventwinnerList(festprProCd=${p.festpr_pro_cd})}">
+			 		 	<button type="button" class="btn btn-info">이벤트 당첨자관리</button></a>
+					</div>
+                  </div>                                       
+              </form>
+            </div>
+        <div align="right">
+		<form action="/prDeletePromotion" method="get" id="prDel">
+		<a th:href="@{/prUpdatePromotion(festprProCd=${p.festpr_pro_cd})}">
+		<button type="button" class="btn btn-primary">수정하기</button></a>
+		<input type="hidden" name="festprProCd" th:value="${p.festpr_pro_cd}" >
+		<button type="button" class="btn btn-danger" id="prDetailDeleteBtn" >삭제하기</button>
+		</form>
+		</div>
+            </th:block>
+            <!-- /form-panel -->
+          </div>		
+	</div>
+
+
+		
+		
+		
+</th:block>
+<th:block layout:fragment="adminisscript">
+<th:block th:include="fragments/adminis/adminisscript"></th:block>
+</th:block>
+
+</html>
